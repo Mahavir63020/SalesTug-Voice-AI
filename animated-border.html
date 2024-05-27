@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SalesTug Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: rgb(7, 7, 7);
+            font-family: Arial, sans-serif;
+        }
+
+        .box {
+            --border-width: -5px;
+            position: relative;
+            width: 1450px;
+            height: 650px;
+        }
+
+        .box::before,
+        .box::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            background: repeating-conic-gradient(from var(--a),
+                #0f0,
+                #ff0,
+                #0ff,
+                #f0f,
+                #0ff
+            );
+            animation: rotate-gradient 4s infinite linear;
+        }
+
+        .box::after {
+            filter: blur(40px);
+            opacity: 0.75;
+        }
+
+        .box span {
+            position: absolute;
+            inset: 4px;
+            background: #222;
+            border-radius: 16px;
+            z-index: 1;
+        }
+
+        @property --a {
+            syntax: "<angle>";
+            inherits: false;
+            initial-value: 0deg;
+        }
+
+        :root {
+            --a: 0deg;
+        }
+
+        @keyframes rotate-gradient {
+            to {
+                --a: 360deg;
+            }
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100%;
+            background: #333;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            border-top-left-radius: 16px;
+            border-bottom-left-radius: 16px;
+            z-index: 2;
+            overflow-y: auto;
+        }
+
+        .sidebar img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 20px;
+            border-radius: 50%;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            width: 100%;
+        }
+
+        .sidebar ul li {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .sidebar ul li .dashboard-box {
+            width: 100%;
+            padding: 15px;
+            background-color: #444;
+            color: #fff;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-size: 1rem;
+        }
+
+        .sidebar ul li .dashboard-box:hover {
+            background-color: #8400ff;
+        }
+
+        /* Top Navigation Bar Styling */
+        .top-nav {
+            position: absolute;
+            top: 0;
+            left: 250px;
+            width: calc(100% - 250px);
+            height: 60px;
+            background: rgb(68, 68, 68)68, 68, 68)68, 68, 68);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            color: #fff;
+            border-top-right-radius: 16px;
+            z-index: 2;
+        }
+
+        .top-nav .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .top-nav .logo-container img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .top-nav h2 {
+            margin-left: 20px;
+        }
+
+        /* Main Content Area Styling */
+        .main-content {
+            position: absolute;
+            top: 60px;
+            left: 250px;
+            width: calc(100% - 250px);
+            height: calc(100% - 60px);
+            background: #aab3d2;
+            padding: 20px;
+            overflow-y: auto;
+            border-bottom-right-radius: 16px;
+        }
+
+        /* Content Sections Styling */
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="box">
+        <span>
+            <div class="sidebar">
+                <img src="logo.jpeg" alt="SalesTug Logo">
+                <h2>SalesTug Voice AI</h2>
+                <ul>
+                    <li><div class="dashboard-box" onclick="showContent('daily-call-summary')">Daily Call Summary</div></li>
+                    <li><div class="dashboard-box" onclick="showContent('call-recordings')">Call Recordings</div></li>
+                    <li><div class="dashboard-box" onclick="showContent('call-outcomes')">Call Outcomes</div></li>
+                    <li><div class="dashboard-box" onclick="showContent('lead-status')">Lead Status</div></li>
+                    <li><div class="dashboard-box" onclick="showContent('response-rate')">Response Rate</div></li>
+                    <li><div class="dashboard-box" onclick="showContent('appointments-scheduled')">Appointments Scheduled</div></li>
+                    <li><div class="dashboard-box" onclick="showContent('performance-metrics')">Performance Metrics</div></li>
+                    <li><div class="dashboard-box" onclick="showContent('transcripts')">Transcripts</div></li>
+                </ul>
+            </div>
+            <div class="top-nav">
+                <h2>Dashboard</h2>
+            </div>
+            <div class="main-content">
+                <div id="daily-call-summary" class="content-section">
+                    <h2>Daily Call Summary</h2>
+                    <p>Details about daily call summary go here.</p>
+                </div>
+                <div id="call-recordings" class="content-section">
+                    <h2>Call Recordings</h2>
+                    <p>Details about call recordings go here.</p>
+                </div>
+                <div id="call-outcomes" class="content-section">
+                    <h2>Call Outcomes</h2>
+                    <p>Details about call outcomes go here.</p>
+                </div>
+                <div id="lead-status" class="content-section">
+                    <h2>Lead Status</h2>
+                    <p>Details about lead status go here.</p>
+                </div>
+                <div id="response-rate" class="content-section">
+                    <h2>Response Rate</h2>
+                    <p>Details about response rate go here.</p>
+                </div>
+                <div id="appointments-scheduled" class="content-section">
+                    <h2>Appointments Scheduled</h2>
+                    <p>Details about appointments scheduled go here.</p>
+                </div>
+                <div id="performance-metrics" class="content-section">
+                    <h2>Performance Metrics</h2>
+                    <p>Details about performance metrics go here.</p>
+                </div>
+                <div id="transcripts" class="content-section">
+                    <h2>Transcripts</h2>
+                    <p>Details about transcripts go here.</p>
+                </div>
+            </div>
+        </span>
+    </div>
+
+    <script>
+        function showContent(sectionId) {
+            var sections = document.querySelectorAll('.content-section');
+            sections.forEach(function(section) {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
+    </script>
+</body>
+</html>
