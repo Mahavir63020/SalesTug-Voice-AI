@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SalesTug Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: rgb(7, 7, 7);
+            font-family: Arial, sans-serif;
+        }
+
+        .box {
+            --border-width: -5px;
+            position: relative;
+            width: 1450px;
+            height: 650px;
+        }
+
+        .box::before,
+        .box::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            background: repeating-conic-gradient(from var(--a),
+                #0f0,
+                #ff0,
+                #0ff,
+                #f0f,
+                #0ff
+            );
+            animation: rotate-gradient 4s infinite linear;
+        }
+
+        .box::after {
+            filter: blur(40px);
+            opacity: 0.75;
+        }
+
+        .box span {
+            position: absolute;
+            inset: 4px;
+            background: #222;
+            border-radius: 16px;
+            z-index: 1;
+        }
+
+        @property --a {
+            syntax: "<angle>";
+            inherits: false;
+            initial-value: 0deg;
+        }
+
+        :root {
+            --a: 0deg;
+        }
+
+        @keyframes rotate-gradient {
+            to {
+                --a: 360deg;
+            }
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100%;
+            background: #3c096c;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            border-top-left-radius: 16px;
+            border-bottom-left-radius: 16px;
+            z-index: 2;
+            overflow-y: auto;
+        }
+
+        .sidebar img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 20px;
+            border-radius: 50%;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            width: 100%;
+        }
+
+        .sidebar ul li {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .sidebar ul li .dashboard-box {
+            width: 100%;
+            padding: 15px;
+            background-color: #7b2cbf;
+            color: #fff;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-size: 1rem;
+        }
+
+        .sidebar ul li .dashboard-box:hover {
+            background-color: #ff00dd;
+        }
+
+        /* Top Navigation Bar Styling */
+        .top-nav {
+            position: absolute;
+            top: 0;
+            left: 250px;
+            width: calc(100% - 250px);
+            height: 60px;
+            background: #240046;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            color: #fff;
+            border-top-right-radius: 16px;
+            z-index: 2;
+        }
+
+        .top-nav .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .top-nav .logo-container img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .top-nav h2 {
+            margin-left: 20px;
+        }
+
+        /* Main Content Area Styling */
+        .main-content {
+            position: absolute;
+            top: 60px;
+            left: 250px;
+            width: calc(100% - 250px);
+            height: calc(100% - 60px);
+            background: #9d4edd;
+            padding: 20px;
+            overflow-y: auto;
+            border-bottom-right-radius: 16px;
+        }
+
+        /* Content Sections Styling */
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        /* Graph Styles */
+        .graph {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .graph .item {
+            flex: 1;
+            text-align: center;
+            margin: 0 10px;
+        }
+
+        .graph .item h3 {
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .graph .item p {
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Circular Graph */
+        .circle-graph {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: #4CAF50;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .circle-graph::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            clip-path: conic-gradient(#fff 0% var(--percentage), transparent var(--percentage) 100%);
+        }
+
+        .circle-graph span {
+            z-index: 1;
+            font-size: 36px;
+            color: #fff;
+        }
+
+        /* Ring Graph */
+        .ring-graph {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: #f44336;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ring-graph::before {
+            content: "";
+            position: absolute;
+            width: calc(100% - 20px);
+            height: calc(100% - 20px);
+            border-radius: 50%;
+            background: #fff;
+            z-index: 1;             }
+
+            .ring-graph::after {
+                content: "";
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                clip-path: polygon(50% 0%, 50% 50%, 100% 50%, 100% 100%, 0% 100%, 0% 50%);
+                background: #4CAF50;
+                transform: rotate(calc(var(--percentage) * 1deg));
+                z-index: 2;
+            }
+
+            .ring-graph span {
+                z-index: 3;
+                font-size: 36px;
+                color: #fff;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="box">
+            <span>
+                <div class="sidebar">
+                    <img src="logo.jpeg" alt="SalesTug Logo">
+                    <h2>SalesTug Voice AI</h2>
+                    <ul>
+                        <li><div class="dashboard-box" onclick="showContent('daily-call-summary')">Daily Call Summary</div></li>
+                        <li><div class="dashboard-box" onclick="showContent('call-outcomes')">Call Outcomes</div></li>
+                        <li><div class="dashboard-box" onclick="showContent('call-duration')">Call Duration</div></li>
+                        <li><div class="dashboard-box" onclick="showContent('lead-status')">Lead Status</div></li>
+                        <li><div class="dashboard-box" onclick="showContent('response-rate')">Response Rate</div></li>
+                        <li><div class="dashboard-box" onclick="showContent('call-recording-transcripts')">Call Recording and Transcripts</div></li>
+                        <li><div class="dashboard-box" onclick="showContent('appointment-scheduling')">Appointment Scheduling</div></li>
+                    </ul>
+                </div>
+                <div class="top-nav">
+                    <h2>Dashboard</h2>
+                </div>
+                <div class="main-content">
+                    <!-- Daily Call Summary -->
+                    <div id="daily-call-summary" class="content-section active">
+                        <h2>Daily Call Summary</h2>
+                        <div class="graph">
+                            <div class="item">
+                                <h3>Total Calls Made</h3>
+                                <p>100</p>
+                            </div>
+                            <div class="item">
+                                <h3>Successful Connections</h3>
+                                <p>70</p>
+                            </div>
+                            <div class="item">
+                                <h3>Voicemails Left</h3>
+                                <p>10</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Call Outcomes -->
+                    <div id="call-outcomes" class="content-section">
+                        <h2>Call Outcomes</h2>
+                        <div class="graph">
+                            <div class="item">
+                                <h3>Appointments Scheduled</h3>
+                                <p>20</p>
+                            </div>
+                            <div class="item">
+                                <h3>Follow-up Calls Needed</h3>
+                                <p>15</p>
+                            </div>
+                            <div class="item">
+                                <h3>Uninterested Leads</h3>
+                                <p>5</p>
+                            </div>
+                            <div class="item">
+                                <h3>Wrong Numbers/Disconnected Calls</h3>
+                                <p>8</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Call Duration -->
+                    <div id="call-duration" class="content-section">
+                        <h2>Call Duration</h2>
+                        <div class="graph">
+                            <div class="item">
+                                <h3>Average Call Duration</h3>
+                                <p>3:20</p>
+                            </div>
+                            <div class="item">
+                                <h3>Longest Call Duration</h3>
+                                <p>7:45</p>
+                            </div>
+                            <div class="item">
+                                <h3>Shortest Call Duration</h3>
+                                <p>0:45</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lead Status -->
+                    <div id="lead-status" class="content-section">
+                        <h2>Lead Status</h2>
+                        <div class="graph">
+                            <div class="item">
+                                <h3>Total Leads Contacted</h3>
+                                <p>150</p>
+                            </div>
+                            <div class="item">
+                                <h3>New Leads Contacted</h3>
+                                <p>30</p>
+                            </div>
+                            <div class="item">
+                                <h3>Leads Requiring Immediate Attention</h3>
+                                <p>10</p>
+                            </div>
+                            <div class="item">
+                                <h3>Leads Converted into Appointments</h3>
+                                <p>25</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Response Rate -->
+                    <div id="response-rate" class="content-section">
+                        <h2>Response Rate</h2>
+                        <div class="graph">
+                            <div class="item">
+                                <h3>Percentage of Calls Answered</h3>
+                                <p>75%</p>
+                            </div>
+                            <div class="item">
+                                <h3>Percentage of Calls Resulting in a Conversation</h3>
+                                <p>40%</p>
+                            </div>
+                            <div class="item">
+                                <h3>Percentage of Calls Leading to a Positive Outcome</h3>
+                                <p>20%</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Call Recording and Transcripts -->
+                    <div id="call-recording-transcripts" class="content-section">
+                        <h2>Call Recording and Transcripts</h2>
+                        <p>Access to call recordings and transcripts of conversations for review.</p>
+                    </div>
+
+                    <!-- Appointment Scheduling -->
+                    <div id="appointment-scheduling" class="content-section">
+                        <h2>Appointment Scheduling</h2>
+                        <div class="graph">
+                            <div class="item">
+                                <h3>Number of Appointments Scheduled</h3>
+                                <p>20</p>
+                            </div>
+                            <div class="item">
+                                <h3>Details of Scheduled Appointments</h3>
+                                <p>Date: 2024-05-30<br>Time: 10:00 AM<br>Lead Information: John Doe</p>
+                            </div>
+                            <div class="item">
+                                <h3>Calendar View of Scheduled Appointments</h3>
+                                <img src="calendar.png" alt="Calendar View">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </span>
+        </div>
+
+        <script>
+            function showContent(sectionId) {
+                var sections = document.querySelectorAll('.content-section');
+                sections.forEach(function(section) {
+                    section.classList.remove('active');
+                });
+                document.getElementById(sectionId).classList.add('active');
+            }
+        </script>
+    </body>
+</html>
