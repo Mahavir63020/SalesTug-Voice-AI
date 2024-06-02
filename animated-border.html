@@ -1,255 +1,345 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SalesTug Dashboard</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            background: rgb(7, 7, 7);
-            font-family: Arial, sans-serif;
-        }
-
-        .box {
-            --border-width: -5px;
-            position: relative;
-            width: 1450px;
-            height: 650px;
-        }
-
-        .box::before,
-        .box::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            border-radius: 20px;
-            background: repeating-conic-gradient(from var(--a),
-                #0f0,
-                #ff0,
-                #0ff,
-                #f0f,
-                #0ff
-            );
-            animation: rotate-gradient 4s infinite linear;
-        }
-
-        .box::after {
-            filter: blur(40px);
-            opacity: 0.75;
-        }
-
-        .box span {
-            position: absolute;
-            inset: 4px;
-            background: #222;
-            border-radius: 16px;
-            z-index: 1;
-        }
-
-        @property --a {
-            syntax: "<angle>";
-            inherits: false;
-            initial-value: 0deg;
-        }
-
-        :root {
-            --a: 0deg;
-        }
-
-        @keyframes rotate-gradient {
-            to {
-                --a: 360deg;
-            }
-        }
-
-        /* Sidebar Styling */
-        .sidebar {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 250px;
-            height: 100%;
-            background: #3c096c;
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            border-top-left-radius: 16px;
-            border-bottom-left-radius: 16px;
-            z-index: 2;
-            overflow-y: auto;
-        }
-
-        .sidebar img {
-            width: 50px;
-            height: 50px;
-            margin-bottom: 20px;
-            border-radius: 50%;
-        }
-
-        .sidebar h2 {
-            margin-bottom: 20px;
-        }
-
-        .sidebar ul {
-            list-style-type: none;
-            width: 100%;
-        }
-
-        .sidebar ul li {
-            width: 100%;
-            margin-bottom: 10px;
-        }
-
-        .sidebar ul li .dashboard-box {
-            width: 100%;
-            padding: 15px;
-            background-color: #7b2cbf;
-            color: #fff;
-            border-radius: 10px;
-            text-align: center;
-            cursor: pointer;
-            transition: background 0.3s;
-            font-size: 1rem;
-        }
-
-        .sidebar ul li .dashboard-box:hover {
-            background-color: #ff00dd;
-        }
-
-        /* Top Navigation Bar Styling */
-        .top-nav {
-            position: absolute;
-            top: 0;
-            left: 250px;
-            width: calc(100% - 250px);
-            height: 60px;
-            background: #240046;
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            color: #fff;
-            border-top-right-radius: 16px;
-            z-index: 2;
-        }
-
-        .top-nav .logo-container {
-            display: flex;
-            align-items: center;
-        }
-
-        .top-nav .logo-container img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-
-        .top-nav h2 {
-            margin-left: 20px;
-        }
-
-        /* Main Content Area Styling */
-        .main-content {
-            position: absolute;
-            top: 60px;
-            left: 250px;
-            width: calc(100% - 250px);
-            height: calc(100% - 60px);
-            background: #9d4edd;
-            padding: 20px;
-            overflow-y: auto;
-            border-bottom-right-radius: 16px;
-        }
-
-        /* Content Sections Styling */
-        .content-section {
-            display: none;
-        }
-
-        .content-section.active {
-            display: block;
-        }
-
-    </style>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SalesTug Dashboard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.css">
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: rgb(7, 7, 7);
+    font-family: Arial, sans-serif;
+}
+.box {
+    --border-width: -5px;
+    position: relative;
+    width: 1450px;
+    height: 650px;
+}
+.box::before,
+.box::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    background: repeating-conic-gradient(from var(--a), #0f0, #ff0, #0ff, #f0f, #0ff);
+    animation: rotate-gradient 4s infinite linear;
+}
+.box::after {
+    filter: blur(40px);
+    opacity: 0.75;
+}
+.box span {
+    position: absolute;
+    inset: 4px;
+    background: #222;
+    border-radius: 16px;
+    z-index: 1;
+}
+@property --a {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: 0deg;
+}
+:root {
+    --a: 0deg;
+}
+@keyframes rotate-gradient {
+    to {
+        --a: 360deg;
+    }
+}
+/* Sidebar Styling */
+.sidebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    background: #3c096c;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+    z-index: 2;
+    overflow-y: auto;
+}
+.sidebar img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 20px;
+    border-radius: 50%;
+}
+.sidebar h2 {
+    margin-bottom: 20px;
+}
+.sidebar ul {
+    list-style-type: none;
+    width: 100%;
+}
+.sidebar ul li {
+    width: 100%;
+    margin-bottom: 10px;
+}
+.sidebar ul li .dashboard-box {
+    width: 100%;
+    padding: 15px;
+    background-color: #7b2cbf;
+    color: #fff;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-size: 1rem;
+}
+.sidebar ul li .dashboard-box:hover {
+    background-color: #ff00dd;
+}
+/* Top Navigation Bar Styling */
+.top-nav {
+    position: absolute;
+    top: 0;
+    left: 250px;
+    width: calc(100% - 250px);
+    height: 60px;
+    background: #240046;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    color: #fff;
+    border-top-right-radius: 16px;
+    z-index: 2;
+}
+.top-nav .logo-container {
+    display: flex;
+    align-items: center;
+}
+.top-nav .logo-container img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.top-nav h2 {
+    margin-left: 20px;
+}
+/* Main Content Area Styling */
+.main-content {
+    position: absolute;
+    top: 60px;
+    left: 250px;
+    width: calc(100% - 250px);
+    height: calc(100% - 60px);
+    background: #9d4edd;
+    padding: 20px;
+    overflow-y: auto;
+    border-bottom-right-radius: 16px;
+}
+/* Content Sections Styling */
+.content-section {
+    display: none;
+}
+.content-section.active {
+    display: block;
+}
+.canvas-container {
+    width: 50%; /* Set the width to 50% */
+    height: 50%; /* Set the height to 50% */
+    margin: 0 auto; /* Center the canvas */
+}
+</style>
 </head>
 <body>
-    <div class="box">
-        <span>
-            <div class="sidebar">
-                <img src="logo.jpeg" alt="SalesTug Logo">
-                <h2>SalesTug Voice AI</h2>
-                <ul>
-                    <li><div class="dashboard-box" onclick="showContent('daily-call-summary')">Daily Call Summary</div></li>
-                    <li><div class="dashboard-box" onclick="showContent('call-recordings')">Call Recordings</div></li>
-                    <li><div class="dashboard-box" onclick="showContent('call-outcomes')">Call Outcomes</div></li>
-                    <li><div class="dashboard-box" onclick="showContent('lead-status')">Lead Status</div></li>
-                    <li><div class="dashboard-box" onclick="showContent('response-rate')">Response Rate</div></li>
-                    <li><div class="dashboard-box" onclick="showContent('appointments-scheduled')">Appointments Scheduled</div></li>
-                    <li><div class="dashboard-box" onclick="showContent('performance-metrics')">Performance Metrics</div></li>
-                    <li><div class="dashboard-box" onclick="showContent('transcripts')">Transcripts</div></li>
-                </ul>
-            </div>
-            <div class="top-nav">
-                <h2>Dashboard</h2>
-            </div>
-            <div class="main-content">
-                <div id="daily-call-summary" class="content-section">
-                    <h2>Daily Call Summary</h2>
-                    <p>Details about daily call summary go here.</p>
-                </div>
-                <div id="call-recordings" class="content-section">
-                    <h2>Call Recordings</h2>
-                    <p>Details about call recordings go here.</p>
-                </div>
-                <div id="call-outcomes" class="content-section">
-                    <h2>Call Outcomes</h2>
-                    <p>Details about call outcomes go here.</p>
-                </div>
-                <div id="lead-status" class="content-section">
-                    <h2>Lead Status</h2>
-                    <p>Details about lead status go here.</p>
-                </div>
-                <div id="response-rate" class="content-section">
-                    <h2>Response Rate</h2>
-                    <p>Details about response rate go here.</p>
-                </div>
-                <div id="appointments-scheduled" class="content-section">
-                    <h2>Appointments Scheduled</h2>
-                    <p>Details about appointments scheduled go here.</p>
-                </div>
-                <div id="performance-metrics" class="content-section">
-                    <h2>Performance Metrics</h2>
-                    <p>Details about performance metrics go here.</p>
-                </div>
-                <div id="transcripts" class="content-section">
-                    <h2>Transcripts</h2>
-                    <p>Details about transcripts go here.</p>
+<div class="box">
+    <span>
+        <div class="sidebar">
+            <img src="logo.jpeg" alt="SalesTug Logo">
+            <h2>SalesTug Voice AI</h2>
+            <ul>
+                <li><div class="dashboard-box" onclick="showContent('daily-call-summary')">Daily Call Summary</div></li>
+                <li><div class="dashboard-box" onclick="showContent('call-recordings')">Call Recordings</div></li>
+                <li><div class="dashboard-box" onclick="showContent('call-outcomes')">Call Outcomes</div></li>
+                <li><div class="dashboard-box" onclick="showContent('lead-status')">Lead Status</div></li>
+                <li><div class="dashboard-box" onclick="showContent('response-rate')">Response Rate</div></li>
+                <li><div class="dashboard-box" onclick="showContent('appointments-scheduled')">Appointments Scheduled</div></li>
+                <li><div class="dashboard-box" onclick="showContent('performance-metrics')">Performance Metrics</div></li>
+                <li><div class="dashboard-box" onclick="showContent('transcripts')">Transcripts</div></li>
+            </ul>
+        </div>
+        <div class="top-nav">
+            <h2>Dashboard</h2>
+        </div>
+        <div class="main-content">
+            <div id="daily-call-summary" class="content-section">
+                <h2>Daily Call Summary</h2>
+                <p>Total calls made: 150</p>
+                <p>Successful connections: 120</p>
+                <p>Voicemail left: 30</p>
+                <div class="canvas-container">
+                    <canvas id="dailyCallSummaryChart"></canvas>
                 </div>
             </div>
-        </span>
-    </div>
+            <div id="call-recordings" class="content-section">
+                <h2>Call Recordings</h2>
+                <p>Access to call recordings</p>
+                <p>Transcripts of conversations for review</p>
+                <div class="canvas-container">
+                    <canvas id="callRecordingsChart"></canvas>
+                </div>
+            </div>
+            <div id="call-outcomes" class="content-section">
+                <h2>Call Outcomes</h2>
+                <p>Uninterested leads: 10</p>
+                <p>Wrong numbers/disconnected calls: 5</p>
+                <p>Follow-up calls needed: 15</p>
+                <div class="canvas-container">
+                    <canvas id="callOutcomesChart"></canvas>
+                </div>
+            </div>
+            <div id="lead-status" class="content-section">
+                <h2>Lead Status</h2>
+                <p>Total leads contacted: 100</p>
+                <p>Leads converted into appointments: 30</p>
+                <p>Leads requiring immediate attention: 20</p>
+                <div class="canvas-container">
+                    <canvas id="leadStatusChart"></canvas>
+                </div>
+            </div>
+            <div id="response-rate" class="content-section">
+                <h2>Response Rate</h2>
+                <p>Percentage of calls answered: 80%</p>
+                <p>Percentage of calls resulting in a conversation: 75%</p>
+                <p>Percentage of calls leading to a positive outcome: 60%</p>
+                <div class="canvas-container">
+                    <canvas id="responseRateChart"></canvas>
+                </div>
+            </div>
+            <div id="appointments-scheduled" class="content-section">
+                <h2>Appointments Scheduled</h2>
+                <p>Number of appointments scheduled: 20</p>
+                <p>Details of scheduled appointments: Date, Time, Lead Info</p>
+                <p>Number of appointments made by AI when live agent is not available: 5</p>
+                <div class="canvas-container">
+                    <canvas id="appointmentSchedulingChart"></canvas>
+                </div>
+            </div>
+            <div id="performance-metrics" class="content-section">
+                <h2>Performance Metrics</h2>
+                <p>Details about performance metrics go here.</p>
+            </div>
+            <div id="transcripts" class="content-section">
+                <h2>Transcripts</h2>
+                <p>Details about transcripts go here.</p>
+            </div>
+        </div>
+    </span>
+</div>
+<!-- Include Chart.js library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+<script>
+    function showContent(sectionId) {
+        var sections = document.querySelectorAll('.content-section');
+        sections.forEach(function(section) {
+            section.classList.remove('active');
+        });
+        document
 
-    <script>
-        function showContent(sectionId) {
-            var sections = document.querySelectorAll('.content-section');
-            sections.forEach(function(section) {
-                section.classList.remove('active');
-            });
-            document.getElementById(sectionId).classList.add('active');
+.getElementById(sectionId).classList.add('active');
+    }
+
+    // Chart.js configurations
+    var dailyCallSummaryCtx = document.getElementById('dailyCallSummaryChart').getContext('2d');
+    var dailyCallSummaryChart = new Chart(dailyCallSummaryCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Total Calls Made', 'Successful Connections', 'Voicemail Left'],
+            datasets: [{
+                label: 'Count',
+                data: [150, 120, 30],
+                backgroundColor: ['#ff00cc', '#3333ff', '#00ccff']
+            }]
+        },
+        options: {
+            responsive: true
         }
-    </script>
+    });
+
+    var callOutcomesCtx = document.getElementById('callOutcomesChart').getContext('2d');
+    var callOutcomesChart = new Chart(callOutcomesCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Uninterested Leads', 'Wrong Numbers/Disconnected Calls', 'Follow-up Calls Needed'],
+            datasets: [{
+                label: 'Count',
+                data: [10, 5, 15],
+                backgroundColor: ['#ff00cc', '#3333ff', '#00ccff']
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+
+    var leadStatusCtx = document.getElementById('leadStatusChart').getContext('2d');
+    var leadStatusChart = new Chart(leadStatusCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Converted to Appointments', 'Requiring Immediate Attention', 'Yet to Be Contacted'],
+            datasets: [{
+                label: 'Leads Status',
+                data: [30, 20, 50],
+                backgroundColor: ['#ff00cc', '#3333ff', '#00ccff']
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+
+    var responseRateCtx = document.getElementById('responseRateChart').getContext('2d');
+    var responseRateChart = new Chart(responseRateCtx, {
+        type: 'pie',
+        data: {
+            labels: ['Answered Calls', 'Resulted in Conversation', 'Led to Positive Outcome'],
+            datasets: [{
+                label: 'Response Rate',
+                data: [80, 75, 60],
+                backgroundColor: ['#ff00cc', '#3333ff', '#00ccff']
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+
+    var appointmentSchedulingCtx = document.getElementById('appointmentSchedulingChart').getContext('2d');
+    var appointmentSchedulingChart = new Chart(appointmentSchedulingCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Scheduled by Live Agents', 'Scheduled by AI'],
+            datasets: [{
+                label: 'Appointments',
+                data: [15, 5],
+                backgroundColor: ['#ff00cc', '#3333ff']
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+</script>
 </body>
 </html>
