@@ -105,12 +105,13 @@
         .canvas-container {
             width: 100%;
             max-width: 300px;
+            height: 300px; /* Set a fixed height for the container */
             margin-top: 20px;
         }
 
         canvas {
             width: 100%;
-            height: auto;
+            height: 100%; /* Make the canvas take the full height of the container */
         }
     </style>
 </head>
@@ -144,7 +145,8 @@
                 }]
             },
             options: {
-                responsive: true
+                responsive: true,
+                maintainAspectRatio: false // Ensure the aspect ratio is not maintained to fit the container
             }
         });
     </script>
