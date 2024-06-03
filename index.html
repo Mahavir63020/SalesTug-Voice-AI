@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SalesTug Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: rgb(7, 7, 7);
+            font-family: Arial, sans-serif;
+        }
+
+        .box {
+            --border-width: -5px;
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            max-width: 400px;
+        }
+
+        .box::before,
+        .box::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            background: repeating-conic-gradient(from var(--a),
+                #0f0,
+                #ff0,
+                #0ff,
+                #f0f,
+                #0ff
+            );
+            animation: rotate-gradient 4s infinite linear;
+        }
+
+        .box::after {
+            filter: blur(40px);
+            opacity: 0.75;
+        }
+
+        .box span {
+            position: absolute;
+            inset: 4px;
+            background: #222;
+            border-radius: 16px;
+            z-index: 1;
+        }
+
+        @property --a {
+            syntax: "<angle>";
+            inherits: false;
+            initial-value: 0deg;
+        }
+
+        :root {
+            --a: 0deg;
+        }
+
+        @keyframes rotate-gradient {
+            to {
+                --a: 360deg;
+            }
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #3C096C;
+            color: #fff;
+            padding: 20px;
+            border-radius: 16px;
+            z-index: 2;
+            overflow-y: auto;
+        }
+
+        .sidebar .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .sidebar .logo-container img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 10px;
+            border-radius: 50%;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 15px;
+        }
+
+        .sidebar h3 {
+            margin-bottom: 20px;
+            font-size: larger;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            width: 100%;
+        }
+
+        .sidebar ul li {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .sidebar ul li .dashboard-box {
+            width: 100%;
+            padding: 15px;
+            background-color: #7642a0;
+            color: #fff;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-size: 1rem;
+        }
+
+        .sidebar ul li .dashboard-box:hover {
+            background-color: #df35df;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <span>
+            <div class="sidebar">
+                <div class="logo-container">
+                    <img src="logo.jpeg" alt="SalesTug Logo">
+                    <h2>SalesTug Voice AI</h2>
+                </div>
+                <h3>Dashboard</h3>
+                <ul>
+                    <li><div class="dashboard-box" type="button" onclick="document.location='daily-call-summary.html'">Daily Call Summary</div></li>
+                    <li><div class="dashboard-box" type="button" onclick="document.location='call-recordings.html'">Call Recordings</div></li>
+                    <li><div class="dashboard-box" type="button" onclick="document.location='call-outcomes.html'">Call Outcomes</div></li>
+                    <li><div class="dashboard-box" type="button" onclick="document.location='lead-status.html'">Lead Status</div></li>
+                    <li><div class="dashboard-box" type="button" onclick="document.location='response-rate.html'">Response Rate</div></li>
+                    <li><div class="dashboard-box" type="button" onclick="document.location='appointments-scheduled.html'">Appointments Scheduled</div></li>
+                    <li><div class="dashboard-box" type="button" onclick="document.location='performance-metrics.html'">Performance Metrics</div></li>
+                </ul>
+            </div>
+        </span>
+    </div>
+</body>
+</html>
